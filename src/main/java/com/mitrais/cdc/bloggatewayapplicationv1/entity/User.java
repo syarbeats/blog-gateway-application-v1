@@ -30,14 +30,16 @@ public class User {
 
     }
 
-    public User(String username, String password, boolean enabled, String role) {
+    public User(int id, String username, String password, boolean enabled, String role) {
+        this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
         this.setRole(role);
     }
 
-    public User(String username, String password, boolean enabled, String role, String email) {
+    public User(int id, String username, String password, boolean enabled, String role, String email) {
+        this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
@@ -45,7 +47,8 @@ public class User {
         this.setEmail(email);
     }
 
-    public User(String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
+    public User(int id, String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
+        this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
