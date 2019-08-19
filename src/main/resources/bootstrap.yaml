@@ -1,0 +1,6 @@
+zuul:
+  routes:
+    blog:
+      path: /services/blog/**
+      url: http://localhost:8081
+      stripPrefix: true
