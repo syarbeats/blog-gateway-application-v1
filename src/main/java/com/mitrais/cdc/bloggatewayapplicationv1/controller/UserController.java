@@ -35,13 +35,13 @@ public class UserController extends CrossOriginController{
 
         if(response.isSuccess()){
             String bytesEncoded = new String(Base64.encodeBase64(user.getUsername().getBytes()));
-            String contents = "Please klik the following link to activate your account, <br/> <a href = \"http://localhost:8080/mongodb-app/api/activate?id=" +bytesEncoded+"\">Activate Account</a>";
+            String contents = "Please klik the following link to activate your account, <br/> <a href = \"http://localhost:8080/api/activate?id=" +bytesEncoded+"\">Activate Account</a>";
 
             try {
                 log.info("username--:"+ user.getUsername());
                 log.info("role--:"+ user.getRole());
                 log.info("token--:"+ bytesEncoded);
-                emailUtility.sendEmail(user.getEmail(), bytesEncoded, user.getUsername(), contents, "[MongoDb-Admin] Please Activate Your Account !!");
+                emailUtility.sendEmail(user.getEmail(), bytesEncoded, user.getUsername(), contents, "[Admin] Please Activate Your Account !!");
                 return ResponseEntity.ok(new Utility("Check your email to activate your account", user).getResponseData());
 
             }catch(Exception e) {
@@ -100,7 +100,7 @@ public class UserController extends CrossOriginController{
         }
 
         try {
-            emailUtility.sendEmail(email, encodedUsername, user.getUsername(), contents, "[MongoDb-Admin] Your password reset request");
+            emailUtility.sendEmail(email, encodedUsername, user.getUsername(), contents, "[Admin] Your password reset request");
             return ResponseEntity.ok(new Utility("Check your email to reset your password", user).getResponseData());
 
         }catch(Exception e) {

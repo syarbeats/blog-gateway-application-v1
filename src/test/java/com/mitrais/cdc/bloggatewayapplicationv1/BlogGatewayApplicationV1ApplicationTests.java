@@ -2,6 +2,7 @@ package com.mitrais.cdc.bloggatewayapplicationv1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
+import com.mitrais.cdc.bloggatewayapplicationv1.payload.AuthenticationPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.services.UserDetailsServices;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.UserDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,8 +20,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import java.nio.charset.Charset;
 
@@ -51,6 +57,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
     private MockMvc mockMvc;
     private UserDetails userDetails;
     private Authentication authToken;
+    private String token;
 
     @Autowired
     UserDetailsServices userDetailsServices;
@@ -70,9 +77,48 @@ public class BlogGatewayApplicationV1ApplicationTests {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
+    private String obtainAccessToken(String username, String password) throws Exception {
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("username", username);
+        params.add("password", password);
+
+        AuthenticationPayload user = new AuthenticationPayload(username, password);
+        String userJson = mapper.writeValueAsString(user);
+
+        ResultActions result
+                = mockMvc.perform(post("http://localhost:8090/api/authentication")
+                .content(userJson)
+                .accept("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+
+        String resultString = result.andReturn().getResponse().getContentAsString();
+
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        return jsonParser.parseMap(resultString).get("access_token").toString();
+    }
+
+    @Test
+    public void login() throws Exception{
+        AuthenticationPayload user = new AuthenticationPayload("admin", "admin123");
+        String userJson = mapper.writeValueAsString(user);
+
+        MvcResult mvcResult = mockMvc.perform(post("http://localhost:8090/api/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userJson)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['message']", containsString("You have login successfully")))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
     @Test
     public void userRegistration() throws Exception{
-        User user = new User(4,"arkhyterima", "pass123", true, "ROLE_USER", "srf.hidayat@gmail.com");
+        //String accessToken = obtainAccessToken("admin", "admin123");
+        User user = new User("arkhyterima", "pass123", true, "ROLE_USER", "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);
 
         mockMvc.perform(post("http://localhost:8090/api/register")
