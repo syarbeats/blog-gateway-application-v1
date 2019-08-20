@@ -4,3 +4,4 @@ zuul:
       path: /services/blog/**
       url: http://localhost:8081
       stripPrefix: true
+      sensitiveHeaders:
