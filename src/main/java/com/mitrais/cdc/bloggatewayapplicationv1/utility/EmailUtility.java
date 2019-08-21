@@ -1,7 +1,7 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +36,9 @@ public class EmailUtility {
             }
         } catch (MessagingException | IOException e) {
             log.error(e.getMessage(), e);
-        } catch (AddressException e) {
+        } /*catch (AddressException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return false;
     }
@@ -58,9 +58,9 @@ public class EmailUtility {
             }
         } catch (MessagingException | IOException e) {
             log.error(e.getMessage(), e);
-        } catch (AddressException e) {
+        } /*catch (AddressException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return false;
     }
