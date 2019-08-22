@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class AuthenticationController {
+public class AuthenticationController extends CrossOriginController {
 
     @Autowired
     AuthenticationService authenticationService;
@@ -36,6 +36,7 @@ public class AuthenticationController {
             data.put("token", "");
             return ResponseEntity.ok(data);
         }
+        data.put("username", username);
         data.put("status", true);
         data.put("message", "You have login successfully");
         data.put("token", token);
