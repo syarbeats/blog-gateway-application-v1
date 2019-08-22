@@ -62,6 +62,16 @@ public class User {
         this.setEmail(email);
     }
 
+    public User(String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setEnabled(enabled);
+        this.setRole(role);
+        this.setEmail(email);
+        this.setFirstname(firstname);
+        this.setLastname(lastname);
+    }
+
     public User(int id, String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
         this.id = id;
         this.setUsername(username);
