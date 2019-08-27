@@ -23,8 +23,7 @@ public class AuthenticationController extends CrossOriginController {
     @PostMapping("/authentication")
     public ResponseEntity<LoginResponse> login(@RequestBody AuthenticationPayload authenticationPayload){
 
-        Map<Object, Object> data = new HashMap<>();
-        LoginResponse response = authenticationService.Login(authenticationPayload);
+        LoginResponse response = authenticationService.login(authenticationPayload);
 
         if(!response.isSuccess()){
             return ResponseEntity.ok(response);

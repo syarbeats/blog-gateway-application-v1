@@ -12,6 +12,8 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @Slf4j
@@ -26,7 +28,7 @@ public class AuthenticationService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public LoginResponse Login(AuthenticationPayload user){
+    public LoginResponse login(AuthenticationPayload user){
 
         String username = user.getUsername();
         String password = user.getPassword();
@@ -53,7 +55,12 @@ public class AuthenticationService {
 
         }
 
-        token = jwtTokenProvider.createToken(username, userLogin.getRole());
+        List<String> roles = userLogin.getRoles();
+        for(String role : roles){
+            log.info("role--:"+ role);
+        }
+
+        token = jwtTokenProvider.createToken(username, roles);
         log.info("TOKEN:", token);
 
         return new LoginResponse(true, "You have login successfully", new TokenPayload(username, token));

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -30,11 +31,11 @@ public class UserController extends CrossOriginController{
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public ResponseEntity userRegister(@RequestBody User user){
 
-        if(userService.FindUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
+        if(userService.findUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
             return ResponseEntity.ok(new Utility("Your username is not available, please find the new one", user).getResponseData());
         }
 
-        APIResponse response = userService.UserRegistration(user);
+        APIResponse response = userService.userRegistration(user);
 
         if(response.isSuccess()){
             String bytesEncoded = new String(Base64.encodeBase64(user.getUsername().getBytes()));
@@ -42,7 +43,12 @@ public class UserController extends CrossOriginController{
 
             try {
                 log.info("username--:"+ user.getUsername());
-                log.info("role--:"+ user.getRole());
+
+                List<String> roles = user.getRoles();
+                for(String role : roles){
+                    log.info("role--:"+ role);
+                }
+
                 log.info("token--:"+ bytesEncoded);
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("email", user.getEmail());
@@ -63,27 +69,27 @@ public class UserController extends CrossOriginController{
 
     @RequestMapping(value="/update/user", method = RequestMethod.PATCH)
     public ResponseEntity updateUserData(@RequestBody User user){
-        return ResponseEntity.ok(new Utility("Update User Data", userService.UpdateUserData(user)).getResponseData());
+        return ResponseEntity.ok(new Utility("Update User Data", userService.updateUserData(user)).getResponseData());
     }
 
     @RequestMapping(value="/delete/user/{username}", method = RequestMethod.DELETE)
     public ResponseEntity deleteUserDataByUsername(@PathVariable("username") String username){
-        return ResponseEntity.ok(new Utility("Delete User Data", userService.DeleteUserByUsername(username)).getResponseData());
+        return ResponseEntity.ok(new Utility("Delete User Data", userService.deleteUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/find/user/{id}", method = RequestMethod.GET)
     public ResponseEntity deleteUserDataById(@PathVariable("id") int id){
-        return ResponseEntity.ok(new Utility("Find User Data", userService.FindUserById(id)).getResponseData());
+        return ResponseEntity.ok(new Utility("Find User Data", userService.findUserById(id)).getResponseData());
     }
 
     @RequestMapping(value="/find-user-by-username/{username}", method = RequestMethod.GET)
     public ResponseEntity findUserByUsername(@PathVariable("username") String username){
-        return ResponseEntity.ok(new Utility("Find User Data By Username", userService.FindUserByUsername(username)).getResponseData());
+        return ResponseEntity.ok(new Utility("Find User Data By Username", userService.findUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/all-users", method = RequestMethod.GET)
     public ResponseEntity getAllUsers(){
-        return ResponseEntity.ok(new Utility("Find User Data", userService.GetAllUsers()).getResponseData());
+        return ResponseEntity.ok(new Utility("Find User Data", userService.getAllUsers()).getResponseData());
     }
 
     /**
@@ -93,7 +99,7 @@ public class UserController extends CrossOriginController{
     public ResponseEntity resetPasswordRequest(@RequestBody ResetPasswordPayload request){
 
         String email = request.getEmail();
-        User user = userService.FindUserByEmail(email);
+        User user = userService.findUserByEmail(email);
         String encodedUsername = new String(Base64.encodeBase64(user.getUsername().getBytes()));
         String contents = "Please klik the following link to reset your password, <br/> <a href = \"http://localhost:3000/resetpassword?id=" +encodedUsername+"\">Reset Password</a>";
 
@@ -123,7 +129,7 @@ public class UserController extends CrossOriginController{
     public ResponseEntity resetPassword(@RequestBody NewPasswordPayload password){
 
         try{
-            return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.ResetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
+            return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.resetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
         }catch (Exception e){
 
         }
@@ -136,7 +142,7 @@ public class UserController extends CrossOriginController{
         byte[] usernameDecoded = Base64.decodeBase64(id.getBytes());
         String username = new String(usernameDecoded);
         log.info("USERNAME", username);
-        APIResponse response = userService.ActivateUser(username);
+        APIResponse response = userService.activateUser(username);
 
         if(response.isSuccess())
         {

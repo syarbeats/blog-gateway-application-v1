@@ -28,6 +28,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -118,7 +120,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
     @Test
     public void userRegistration() throws Exception{
         //String accessToken = obtainAccessToken("admin", "admin123");
-        User user = new User("arkhyterima", "pass123", true, "ROLE_USER", "srf.hidayat@gmail.com");
+        List<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        User user = new User("arkhyterima", "pass123", true, roles, "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);
 
         mockMvc.perform(post("http://localhost:8090/api/register")
@@ -134,7 +138,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
     @Test
     public void UpdateUserData() throws Exception{
 
-        User user = new User(2,"test2", "test123", true, "ROLE_USER", "srf.hidayat@gmail.com");
+        List<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        User user = new User(2,"test2", "test123", true, roles, "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);
 
         MockHttpServletRequestBuilder builder =
