@@ -8,7 +8,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 

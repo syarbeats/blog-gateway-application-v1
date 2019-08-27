@@ -78,7 +78,7 @@ public class UserController extends CrossOriginController{
     }
 
     @RequestMapping(value="/find/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity deleteUserDataById(@PathVariable("id") int id){
+    public ResponseEntity findUserDataById(@PathVariable("id") int id){
         return ResponseEntity.ok(new Utility("Find User Data", userService.findUserById(id)).getResponseData());
     }
 
