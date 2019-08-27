@@ -1,21 +1,17 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.services;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
-import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.AuthenticationPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.LoginResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.TokenPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
 import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Slf4j

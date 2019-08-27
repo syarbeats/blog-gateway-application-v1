@@ -1,9 +1,5 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.security.jwt;
 
-/**
- * Created by Syarif Hidayat on 22/04/2019.
- */
-
 import com.mitrais.cdc.bloggatewayapplicationv1.services.UserDetailsServices;
 import io.jsonwebtoken.*;
 

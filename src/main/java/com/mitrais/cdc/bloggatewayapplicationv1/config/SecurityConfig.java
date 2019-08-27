@@ -20,7 +20,6 @@ import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-/*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
