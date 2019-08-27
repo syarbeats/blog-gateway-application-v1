@@ -132,7 +132,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['message']", containsString("Check your email to activate your account")))
                 .andExpect(jsonPath("$['contents']['username']", containsString("arkhyterima")))
-                .andExpect(jsonPath("$['contents']['role']", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['contents']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['contents']['message']", containsString("Update user data has been updated successfully")))
                 .andExpect(jsonPath("$['contents']['data']['username']", containsString("test2")))
-                .andExpect(jsonPath("$['contents']['data']['role']", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['contents']['data']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
@@ -183,7 +183,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/find-user-by-username/"+USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['data']['role']", containsString(ROLE_FOR_ID_2)));
+                .andExpect(jsonPath("$['contents']['data']['roles'][0]", containsString(ROLE_FOR_ID_2)));
 
     }
 
@@ -195,7 +195,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$['contents']['message']", containsString("Users data was founds")))
                 .andExpect(jsonPath("$['contents']['data'][0]['username']", containsString("admin")))
-                .andExpect(jsonPath("$['contents']['data'][0]['role']", containsString("ROLE_ADMIN")));
+                .andExpect(jsonPath("$['contents']['data'][0]['roles'][0]", containsString("ROLE_ADMIN")));
     }
 
 }
