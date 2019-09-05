@@ -11,6 +11,7 @@ secret key sharing between gateway application and its microservices.
 5. Cucumber & JUnit for High Level's Like Integration Testing
 6. Cucumber for Frontend High Level Testing (Frontend: https://github.com/syarbeats/blog-frontend-application.git)
 7. Chrome Webdriver
+8. Zuul Proxy
 
 ### Workflow
 
