@@ -1,0 +1,26 @@
+# blog-gateway-application-v1
+This project used zuul proxy as endpoint routing and Swagger-ui to manage API list. 
+Json web token used to handle authentication process in gateway application and will also used in all microservices using 
+secret key sharing between gateway application and its microservices. 
+
+## The Stacks:
+1. Springboot 2.1.6
+2. MySQL
+3. Swagger-ui
+4. MockMVC for Integration testing
+5. Cucumber & JUnit for High Level's Like Integration Testing
+6. Cucumber for Frontend High Level Testing (Frontend: https://github.com/syarbeats/blog-frontend-application.git)
+7. Chrome Webdriver
+
+### Workflow
+
+### User Registration
+
+<img width="512" alt="flow" src="https://user-images.githubusercontent.com/18225438/61030681-1c0f0f80-a3e8-11e9-9322-e65e298b26d7.PNG">
+
+
+### Swagger-ui Screenshoot
+
+<img width="372" alt="Gateway Swagger" src="https://user-images.githubusercontent.com/18225438/64321060-f4a08180-cfe9-11e9-981f-e2990623561b.PNG">
+
+
