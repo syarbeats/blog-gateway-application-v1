@@ -3,6 +3,10 @@ This project used zuul proxy as endpoint routing and Swagger-ui to manage API li
 Json web token used to handle authentication process in gateway application and will also used in all microservices using 
 secret key sharing between gateway application and its microservices. 
 
+## Architecture
+
+<img width="446" alt="Architecture" src="https://user-images.githubusercontent.com/18225438/64321242-62e54400-cfea-11e9-9673-e75681ee877a.PNG">
+
 ## The Stacks:
 1. Springboot 2.1.6
 2. MySQL
