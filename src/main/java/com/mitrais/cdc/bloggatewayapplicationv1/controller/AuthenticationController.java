@@ -6,6 +6,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.payload.LoginResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.TokenPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public class AuthenticationController extends CrossOriginController {
             data.put("status", false);
             data.put("message", "Authentication is failed");
             data.put("token", "");
-            return ResponseEntity.ok(data);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(data);
         }
         data.put("username", username);
         data.put("status", true);

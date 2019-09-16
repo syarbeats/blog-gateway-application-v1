@@ -9,6 +9,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -30,7 +31,7 @@ public class UserController extends CrossOriginController{
     public ResponseEntity<Map<Object, Object>> userRegister(@RequestBody User user){
 
         if(userService.findUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
-            return ResponseEntity.ok(new Utility("Your username is not available, please find the new one", user).getResponseData());
+            return ResponseEntity.status(HttpStatus.FOUND).body(new Utility("Your username is not available, please find the new one", user).getResponseData());
         }
 
         APIResponse response = userService.userRegistration(user);
@@ -48,10 +49,10 @@ public class UserController extends CrossOriginController{
 
             }catch(Exception e) {
                 log.error(e.getMessage(), e);
-
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sent Email was failed when User Registration", response).getResponseData());
             }
         }
-        return ResponseEntity.ok(new Utility("Sent Email was failed when User Registration", response).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User registration is failed.", response).getResponseData());
     }
 
     @RequestMapping(value="/update/user", method = RequestMethod.PATCH)
@@ -91,7 +92,7 @@ public class UserController extends CrossOriginController{
         String contents = "Please klik the following link to reset your password, <br/> <a href = \"http://localhost:3000/resetpassword?id=" +encodedUsername+"\">Reset Password</a>";
 
         if(user == null){
-            return ResponseEntity.ok(new Utility("User data not found", null).getResponseData());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Utility("User data not found", null).getResponseData());
         }
 
         try {
@@ -102,7 +103,7 @@ public class UserController extends CrossOriginController{
             log.error(e.getMessage(), e);
 
         }
-        return ResponseEntity.ok(new Utility("Sending email to reset password was failed", user).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sending email to reset password was failed", user).getResponseData());
 
     }
 
@@ -114,7 +115,7 @@ public class UserController extends CrossOriginController{
         }catch (Exception e){
 
         }
-        return ResponseEntity.ok(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
     }
 
     @RequestMapping(value="/activate", method = RequestMethod.GET)
@@ -131,6 +132,6 @@ public class UserController extends CrossOriginController{
             return ResponseEntity.ok(new Utility("Your account has been activated", username).getResponseData());
         }
 
-        return ResponseEntity.ok(new Utility("User activated was failed", null).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User activated was failed", null).getResponseData());
     }
 }

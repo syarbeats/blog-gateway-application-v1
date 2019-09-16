@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class UserServices {
@@ -119,11 +121,15 @@ public class UserServices {
     public User findUserByEmail(String email){
 
         try{
-            User user = userRepository.findByEmail(email).get();
+           Optional<User> user = userRepository.findByEmail(email);
 
-            if(user != null ){
+           if(user.isPresent()){
+              return user.get();
+           }
+
+           /* if(user != null ){
                 return user;
-            }
+            }*/
 
         }catch (Exception e){
             log.info(e.getMessage(), e);
