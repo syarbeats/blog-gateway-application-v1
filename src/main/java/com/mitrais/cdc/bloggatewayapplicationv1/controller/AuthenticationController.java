@@ -23,10 +23,10 @@ public class AuthenticationController extends CrossOriginController {
     AuthenticationService authenticationService;
 
     @PostMapping("/authentication")
-    public ResponseEntity<?> Login(@RequestBody AuthenticationPayload authenticationPayload){
+    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationPayload authenticationPayload){
 
         Map<Object, Object> data = new HashMap<>();
-        LoginResponse response = authenticationService.Login(authenticationPayload);
+        LoginResponse response = authenticationService.login(authenticationPayload);
         String token = response.getData().getToken();
         String username = response.getData().getUsername();
 

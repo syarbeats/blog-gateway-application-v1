@@ -30,7 +30,7 @@ public class AuthenticationService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public LoginResponse Login(AuthenticationPayload user){
+    public LoginResponse login(AuthenticationPayload user){
 
         String username = user.getUsername();
         String password = user.getPassword();

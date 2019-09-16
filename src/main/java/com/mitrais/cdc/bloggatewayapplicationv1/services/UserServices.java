@@ -15,7 +15,7 @@ public class UserServices {
     @Autowired
     UserRepository userRepository;
 
-    public APIResponse UserRegistration(User user){
+    public APIResponse userRegistration(User user){
 
         try{
             user.setRole("ROLE_USER");
@@ -30,7 +30,7 @@ public class UserServices {
         return new APIResponse(false, "User registration was failed", null);
     }
 
-    public APIResponse UpdateUserData(User user){
+    public APIResponse updateUserData(User user){
 
         try{
             User userData = userRepository.findByUsername(user.getUsername());
@@ -52,7 +52,7 @@ public class UserServices {
         return new APIResponse(false, "Update user data was failed", null);
     }
 
-    public APIResponse ResetPassword(String username, String password){
+    public APIResponse resetPassword(String username, String password){
 
         try{
             log.info("USERNAME THAT WANT TO CHANGE HIS PASSWORD:", username);
@@ -66,7 +66,7 @@ public class UserServices {
         return new APIResponse(false, "Update user password was failed", null);
     }
 
-    public APIResponse DeleteUserByUsername(String username){
+    public APIResponse deleteUserByUsername(String username){
         User userData = null;
         try{
             userData = userRepository.findByUsername(username);
@@ -79,7 +79,7 @@ public class UserServices {
         return new APIResponse(false, "Delete user data was failed", userData);
     }
 
-    public APIResponse FindUserById(int id){
+    public APIResponse findUserById(int id){
 
         try{
             User user = userRepository.findById(id).get();
@@ -98,7 +98,7 @@ public class UserServices {
         return new APIResponse(false, "Internal System Error", null);
     }
 
-    public APIResponse FindUserByUsername(String username){
+    public APIResponse findUserByUsername(String username){
 
         try{
             User user = userRepository.findByUsername(username);
@@ -116,7 +116,7 @@ public class UserServices {
         return new APIResponse(false, "Internal System Error", null);
     }
 
-    public User FindUserByEmail(String email){
+    public User findUserByEmail(String email){
 
         try{
             User user = userRepository.findByEmail(email).get();
@@ -132,7 +132,7 @@ public class UserServices {
         return null ;
     }
 
-    public APIResponse GetAllUsers(){
+    public APIResponse getAllUsers(){
 
         try{
             return new APIResponse(true, "Users data was founds", userRepository.findAll());
@@ -143,7 +143,7 @@ public class UserServices {
         return new APIResponse(false, "Data was not found", null);
     }
 
-    public APIResponse ActivateUser(String username){
+    public APIResponse activateUser(String username){
 
         User user = userRepository.findByUsername(username);
         user.setEnabled(true);
