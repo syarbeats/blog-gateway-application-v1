@@ -9,9 +9,12 @@ import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.apache.tomcat.util.codec.binary.Base64;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,13 +28,13 @@ public class UserController extends CrossOriginController{
     EmailUtility emailUtility;
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public ResponseEntity UserRegister(@RequestBody User user){
+    public ResponseEntity<Map<Object, Object>> userRegister(@RequestBody User user){
 
-        if(userService.FindUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
-            return ResponseEntity.ok(new Utility("Your username is not available, please find the new one", user).getResponseData());
+        if(userService.findUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
+            return ResponseEntity.status(HttpStatus.FOUND).body(new Utility("Your username is not available, please find the new one", user).getResponseData());
         }
 
-        APIResponse response = userService.UserRegistration(user);
+        APIResponse response = userService.userRegistration(user);
 
         if(response.isSuccess()){
             String bytesEncoded = new String(Base64.encodeBase64(user.getUsername().getBytes()));
@@ -46,57 +49,50 @@ public class UserController extends CrossOriginController{
 
             }catch(Exception e) {
                 log.error(e.getMessage(), e);
-
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sent Email was failed when User Registration", response).getResponseData());
             }
         }
-        return ResponseEntity.ok(new Utility("Sent Email was failed when User Registration", response).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User registration is failed.", response).getResponseData());
     }
 
-   /* @RequestMapping(value="/register", method = RequestMethod.POST)
-    public ResponseEntity UserRegister(@RequestBody User user){
-        return ResponseEntity.ok(new Utility("User Registration", userService.UserRegistration(user)).getResponseData());
-    }*/
-
     @RequestMapping(value="/update/user", method = RequestMethod.PATCH)
-    public ResponseEntity UpdateUserData(@RequestBody User user){
-        return ResponseEntity.ok(new Utility("Update User Data", userService.UpdateUserData(user)).getResponseData());
+    public ResponseEntity<Map<Object, Object>> updateUserData(@RequestBody User user){
+        return ResponseEntity.ok(new Utility("Update User Data", userService.updateUserData(user)).getResponseData());
     }
 
     @RequestMapping(value="/delete/user/{username}", method = RequestMethod.DELETE)
-    public ResponseEntity DeleteUserData(@PathVariable("username") String username){
-        return ResponseEntity.ok(new Utility("Delete User Data", userService.DeleteUserByUsername(username)).getResponseData());
+    public ResponseEntity<Map<Object, Object>> deleteUserData(@PathVariable("username") String username){
+        return ResponseEntity.ok(new Utility("Delete User Data", userService.deleteUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/find/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity DeleteUserData(@PathVariable("id") int id){
-        return ResponseEntity.ok(new Utility("Find User Data", userService.FindUserById(id)).getResponseData());
+    public ResponseEntity<Map<Object, Object>> deleteUserData(@PathVariable("id") int id){
+        return ResponseEntity.ok(new Utility("Find User Data", userService.findUserById(id)).getResponseData());
     }
 
     @RequestMapping(value="/find-user-by-username/{username}", method = RequestMethod.GET)
-    public ResponseEntity FindUserByUsername(@PathVariable("username") String username){
-        return ResponseEntity.ok(new Utility("Find User Data By Username", userService.FindUserByUsername(username)).getResponseData());
+    public ResponseEntity<Map<Object, Object>> findUserByUsername(@PathVariable("username") String username){
+        return ResponseEntity.ok(new Utility("Find User Data By Username", userService.findUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/all-users", method = RequestMethod.GET)
-    public ResponseEntity GetAllUsers(){
-        return ResponseEntity.ok(new Utility("Find User Data", userService.GetAllUsers()).getResponseData());
+    public ResponseEntity<Map<Object, Object>> getAllUsers(){
+        return ResponseEntity.ok(new Utility("Find User Data", userService.getAllUsers()).getResponseData());
     }
 
     /**
      * url to handle reset password request, this api will send email that contain link to reset the password
      * */
     @RequestMapping(value="/resetpassword", method = RequestMethod.POST)
-    /*public ResponseEntity ResetPasswordRequest(HttpServletRequest request){*/
-    public ResponseEntity ResetPasswordRequest(@RequestBody ResetPasswordPayload request){
+    public ResponseEntity<Map<Object, Object>> resetPasswordRequest(@RequestBody ResetPasswordPayload request){
 
-        /*String email = request.getParameter("email");*/
         String email = request.getEmail();
-        User user = userService.FindUserByEmail(email);
+        User user = userService.findUserByEmail(email);
         String encodedUsername = new String(Base64.encodeBase64(user.getUsername().getBytes()));
         String contents = "Please klik the following link to reset your password, <br/> <a href = \"http://localhost:3000/resetpassword?id=" +encodedUsername+"\">Reset Password</a>";
 
         if(user == null){
-            return ResponseEntity.ok(new Utility("User data not found", null).getResponseData());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Utility("User data not found", null).getResponseData());
         }
 
         try {
@@ -107,42 +103,35 @@ public class UserController extends CrossOriginController{
             log.error(e.getMessage(), e);
 
         }
-        return ResponseEntity.ok(new Utility("Sending email to reset password was failed", user).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sending email to reset password was failed", user).getResponseData());
 
     }
 
     @RequestMapping(value="/reset", method = RequestMethod.POST)
-    public ResponseEntity ResetPassword(@RequestBody NewPasswordPayload password){
+    public ResponseEntity<Map<Object, Object>> resetPassword(@RequestBody NewPasswordPayload password){
 
         try{
-            return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.ResetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
+            return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.resetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
         }catch (Exception e){
 
         }
-        return ResponseEntity.ok(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
     }
 
     @RequestMapping(value="/activate", method = RequestMethod.GET)
-    public ResponseEntity ActivateUser(@RequestParam("id") String id){
+    public ResponseEntity<Map<Object, Object>> activateUser(@RequestParam("id") String id){
 
         //byte[] usernameDecoded = Base64.decodeBase64(id.getToken().getBytes());
         byte[] usernameDecoded = Base64.decodeBase64(id.getBytes());
         String username = new String(usernameDecoded);
         log.info("USERNAME", username);
-        APIResponse response = userService.ActivateUser(username);
+        APIResponse response = userService.activateUser(username);
 
         if(response.isSuccess())
         {
             return ResponseEntity.ok(new Utility("Your account has been activated", username).getResponseData());
         }
 
-        return ResponseEntity.ok(new Utility("User activated was failed", null).getResponseData());
-    }
-
-    @RequestMapping(value="/test", method = RequestMethod.GET)
-    public String Test(){
-        String user = "admin:admin123";
-        String bytesEncoded = new String(Base64.encodeBase64(user.getBytes()));
-        return bytesEncoded;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User activated was failed", null).getResponseData());
     }
 }

@@ -132,7 +132,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
     }
 
     @Test
-    public void UpdateUserData() throws Exception{
+    public void updateUserData() throws Exception{
 
         User user = new User(2,"test2", "test123", true, "ROLE_USER", "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);

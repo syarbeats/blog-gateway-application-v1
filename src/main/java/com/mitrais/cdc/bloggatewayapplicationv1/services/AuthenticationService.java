@@ -30,7 +30,7 @@ public class AuthenticationService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public LoginResponse Login(AuthenticationPayload user){
+    public LoginResponse login(AuthenticationPayload user){
 
         String username = user.getUsername();
         String password = user.getPassword();
@@ -44,6 +44,7 @@ public class AuthenticationService {
                 try {
                     Authentication authenticate = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(username, password));
                 }catch (DisabledException e) {
+
                     return new LoginResponse(false, "Disabled Exception", null);
                 }catch (BadCredentialsException e) {
                     return new LoginResponse(false, "Bad Credentials Exception", null);
