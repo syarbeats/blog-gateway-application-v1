@@ -8,9 +8,12 @@ import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
 import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
@@ -42,14 +45,17 @@ public class AuthenticationService {
                 try {
                     Authentication authenticate = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(username, password));
                 }catch (DisabledException e) {
-                    return new LoginResponse(false, "Disabled Exception", null);
+                    throw new DisabledException("Account is disabled");
                 }catch (BadCredentialsException e) {
-                    return new LoginResponse(false, "Bad Credentials Exception", null);
+                    throw new BadCredentialsException("Bad Credentials");
                 }catch(InternalAuthenticationServiceException e) {
-                    return new LoginResponse(false, "Internal Authentication Service Exception", null);
+                    throw new InternalAuthenticationServiceException("Internal Authentication Service Exception");
                 }
-                catch(Exception e) {
-                    return new LoginResponse(false, "Exception", null);
+                catch (UsernameNotFoundException e){
+                    throw new UsernameNotFoundException("Username not found");
+                }
+                catch(HttpServerErrorException e) {
+                    throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             }
 
