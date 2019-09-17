@@ -1,12 +1,17 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
+@Slf4j
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
     private User user;
@@ -17,7 +22,13 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
+
+        List<String> roles = user.getRoles();
+
+        for(String role : roles) {
+            log.info("Role:", role);
+        }
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
     }
 
     @Override

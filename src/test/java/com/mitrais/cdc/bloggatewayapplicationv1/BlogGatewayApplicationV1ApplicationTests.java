@@ -28,6 +28,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -118,7 +120,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
     @Test
     public void userRegistration() throws Exception{
         //String accessToken = obtainAccessToken("admin", "admin123");
-        User user = new User("arkhyterima", "pass123", true, "ROLE_USER", "srf.hidayat@gmail.com");
+        List<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        User user = new User("arkhyterima", "pass123", true, roles, "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);
 
         mockMvc.perform(post("http://localhost:8090/api/register")
@@ -127,14 +131,16 @@ public class BlogGatewayApplicationV1ApplicationTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['message']", containsString("Check your email to activate your account")))
-                .andExpect(jsonPath("$['contents']['username']", containsString("arkhyterima")))
-                .andExpect(jsonPath("$['contents']['role']", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['data']['username']", containsString("arkhyterima")))
+                .andExpect(jsonPath("$['data']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
-    public void updateUserData() throws Exception{
+    public void UpdateUserData() throws Exception{
 
-        User user = new User(2,"test2", "test123", true, "ROLE_USER", "srf.hidayat@gmail.com");
+        List<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        User user = new User(2,"test2", "test123", true, roles, "srf.hidayat@gmail.com");
         String userJson = mapper.writeValueAsString(user);
 
         MockHttpServletRequestBuilder builder =
@@ -145,9 +151,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$['contents']['message']", containsString("Update user data has been updated successfully")))
-                .andExpect(jsonPath("$['contents']['data']['username']", containsString("test2")))
-                .andExpect(jsonPath("$['contents']['data']['role']", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Update user data has been updated successfully")))
+                .andExpect(jsonPath("$['data']['data']['username']", containsString("test2")))
+                .andExpect(jsonPath("$['data']['data']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
@@ -155,8 +161,8 @@ public class BlogGatewayApplicationV1ApplicationTests {
         String username = "arkhyterima";
         mockMvc.perform(delete("/api/delete/user/"+username))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$['contents']['message']", containsString("Delete user data has been executed successfully")))
-                .andExpect(jsonPath("$['contents']['data']", containsString("arkhyterima")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Delete user data has been executed successfully")))
+                .andExpect(jsonPath("$['data']['data']", containsString("arkhyterima")));
 
     }
 
@@ -167,7 +173,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/find/user/"+ID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['data']['username']", containsString(USERNAME_FOR_ID_2)));
+                .andExpect(jsonPath("$['data']['data']['username']", containsString(USERNAME_FOR_ID_2)));
 
     }
 
@@ -177,7 +183,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/find-user-by-username/"+USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['data']['role']", containsString(ROLE_FOR_ID_2)));
+                .andExpect(jsonPath("$['data']['data']['roles'][0]", containsString(ROLE_FOR_ID_2)));
 
     }
 
@@ -187,9 +193,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/all-users/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['message']", containsString("Users data was founds")))
-                .andExpect(jsonPath("$['contents']['data'][0]['username']", containsString("admin")))
-                .andExpect(jsonPath("$['contents']['data'][0]['role']", containsString("ROLE_ADMIN")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Users data was founds")))
+                .andExpect(jsonPath("$['data']['data'][0]['username']", containsString("admin")))
+                .andExpect(jsonPath("$['data']['data'][0]['roles'][0]", containsString("ROLE_ADMIN")));
     }
 
 }

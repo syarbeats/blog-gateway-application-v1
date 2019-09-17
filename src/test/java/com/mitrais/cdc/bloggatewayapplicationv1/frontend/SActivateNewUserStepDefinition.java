@@ -30,14 +30,14 @@ public class SActivateNewUserStepDefinition {
         webDriver.get("http://localhost:3000/login");
         webDriver.findElement(By.xpath("//*[@name='username']")).sendKeys("admin");
         webDriver.findElement(By.xpath("//*[@name='password']")).sendKeys("admin123");
-        webDriver.findElement(By.xpath("//*[@id='login']")).click();
+        webDriver.findElement(By.xpath("//*[@id='submit']")).click();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 
-        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id='root']/div/div[3]/div/main/div/div/div/div/div/div/table/tbody/tr/td[1]"));
+        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div/div/table/tbody/tr/td[1]"));
         System.out.println("No. of rows: "+ rows.size());
         int newRow =  rows.size()+1;
-        String user = webDriver.findElement(By.xpath("//*[@id='root']/div/div[3]/div/main/div/div/div/div/div/div/table/tbody/tr["+newRow+"]/td[1]")).getText();
+        String user = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div/div/table/tbody/tr["+newRow+"]/td[1]")).getText();
         System.out.println("Username:"+user);
         assertThat("test", is(user));
     }
@@ -62,14 +62,14 @@ public class SActivateNewUserStepDefinition {
         webDriver.get("http://localhost:3000/login");
         webDriver.findElement(By.xpath("//*[@name='username']")).sendKeys(username);
         webDriver.findElement(By.xpath("//*[@name='password']")).sendKeys(password);
-        webDriver.findElement(By.xpath("//*[@id='login']")).click();
+        webDriver.findElement(By.xpath("//*[@id='submit']")).click();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
-        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id='root']/div/div[3]/div/main/div/div/div/div/div/div/table/tbody/tr/td[1]"));
+        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div/div/table/tbody/tr/td[1]"));
         System.out.println("No. of rows: "+ rows.size());
         int newRow =  rows.size()+1;
-        String user = webDriver.findElement(By.xpath("//*[@id='root']/div/div[3]/div/main/div/div/div/div/div/div/table/tbody/tr["+newRow+"]/td[1]")).getText();
-        String status = webDriver.findElement(By.xpath("//*[@id='root']/div/div[3]/div/main/div/div/div/div/div/div/table/tbody/tr["+newRow+"]/td[5]")).getText();
+        String user = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div/div/table/tbody/tr["+newRow+"]/td[1]")).getText();
+        String status = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/main/div/div/div[3]/div/div/div/table/tbody/tr["+newRow+"]/td[4]")).getText();
         System.out.println("Username:"+user);
         assertThat("test", is(user));
         assertThat("true", is(status));

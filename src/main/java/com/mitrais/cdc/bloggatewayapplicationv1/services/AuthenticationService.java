@@ -1,21 +1,19 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.services;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
-import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.AuthenticationPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.LoginResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.TokenPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
 import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
 
 @Service
 @Slf4j
@@ -44,7 +42,6 @@ public class AuthenticationService {
                 try {
                     Authentication authenticate = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(username, password));
                 }catch (DisabledException e) {
-
                     return new LoginResponse(false, "Disabled Exception", null);
                 }catch (BadCredentialsException e) {
                     return new LoginResponse(false, "Bad Credentials Exception", null);
@@ -58,7 +55,12 @@ public class AuthenticationService {
 
         }
 
-        token = jwtTokenProvider.createToken(username, userLogin.getRole());
+        List<String> roles = userLogin.getRoles();
+        for(String role : roles){
+            log.info("role--:"+ role);
+        }
+
+        token = jwtTokenProvider.createToken(username, roles);
         log.info("TOKEN:", token);
 
         return new LoginResponse(true, "You have login successfully", new TokenPayload(username, token));

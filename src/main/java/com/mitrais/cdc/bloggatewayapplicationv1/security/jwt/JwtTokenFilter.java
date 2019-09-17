@@ -3,10 +3,6 @@ package com.mitrais.cdc.bloggatewayapplicationv1.security.jwt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Syarif Hidayat on 22/04/2019.
- */
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;

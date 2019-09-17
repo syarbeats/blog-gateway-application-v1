@@ -20,7 +20,6 @@ import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-/*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -55,10 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/activate*").permitAll()
                 .antMatchers("/api/register*").permitAll()

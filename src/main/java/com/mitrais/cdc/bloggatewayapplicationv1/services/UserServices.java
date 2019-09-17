@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Slf4j
@@ -20,7 +19,6 @@ public class UserServices {
     public APIResponse userRegistration(User user){
 
         try{
-            user.setRole("ROLE_USER");
             user.setEnabled(false);
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             return new APIResponse(true,"User has been registered successfully", userRepository.save(user));
@@ -81,23 +79,17 @@ public class UserServices {
         return new APIResponse(false, "Delete user data was failed", userData);
     }
 
-    public APIResponse findUserById(int id){
+    public APIResponse findUserById(int id) {
 
-        try{
-            User user = userRepository.findById(id).get();
+        Optional<User> userOptional = userRepository.findById(id);
 
-            if(user == null ){
-                return new APIResponse(true, "User data was not found", null);
-            }else
-            {
-                return new APIResponse(true, "User data was found", user);
-            }
-
-        }catch (Exception e){
-            log.info(e.getMessage(), e);
+        if(!userOptional.isPresent()){
+            log.info("User Status: NOT FOUND");
+            return new APIResponse(false, "User data was not found", null);
+        }else {
+            return new APIResponse(true, "User data was found", userOptional.get());
         }
 
-        return new APIResponse(false, "Internal System Error", null);
     }
 
     public APIResponse findUserByUsername(String username){
@@ -121,15 +113,11 @@ public class UserServices {
     public User findUserByEmail(String email){
 
         try{
-           Optional<User> user = userRepository.findByEmail(email);
+            User user = userRepository.findByEmail(email).get();
 
-           if(user.isPresent()){
-              return user.get();
-           }
-
-           /* if(user != null ){
+            if(user != null ){
                 return user;
-            }*/
+            }
 
         }catch (Exception e){
             log.info(e.getMessage(), e);
