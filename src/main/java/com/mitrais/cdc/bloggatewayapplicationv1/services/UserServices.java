@@ -73,7 +73,7 @@ public class UserServices {
         try{
             userData = userRepository.findByUsername(username);
             userRepository.delete(userData);
-            return new APIResponse(true, "Delete user data has been executed successfully", username);
+            return new APIResponse(true, "Delete user data has been executed successfully", userData);
         }catch (Exception e){
             log.info(e.getMessage(), e);
         }

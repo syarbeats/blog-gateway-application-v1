@@ -6,13 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class APIResponse {
+public class APIResponseTest {
 
     private boolean success;
     private String message;
-    private Object data;
+    private User data;
 
-    public APIResponse(boolean success, String message, Object data) {
+    public APIResponseTest(boolean success, String message, User data) {
         this.success = success;
         this.message = message;
         this.data = data;
