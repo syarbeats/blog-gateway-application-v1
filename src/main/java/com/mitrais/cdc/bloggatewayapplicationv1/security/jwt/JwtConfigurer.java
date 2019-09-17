@@ -1,8 +1,5 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.security.jwt;
 
-/**
- * Created by Syarif Hidayat on 22/04/2019.
- */
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

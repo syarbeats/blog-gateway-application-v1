@@ -1,16 +1,15 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.entity;
 
+import lombok.Builder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import lombok.Getter;
-import lombok.Setter;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-@Getter
-@Setter
 @Entity
 public class User {
 
@@ -21,63 +20,74 @@ public class User {
     private String username;
     private String password;
     private boolean enabled;
-    private String role;
     private String email;
     private String firstname;
     private String lastname;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+
+    public List<String> getRoles() {
+        return roles;
+    }
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     public User(){
 
     }
 
-    public User(int id, String username, String password, boolean enabled, String role) {
+    public User(int id, String username, String password, boolean enabled, List<String> role) {
         this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
     }
 
-    public User(String username, String password, boolean enabled, String role) {
+    public User(String username, String password, boolean enabled, List<String> role) {
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
     }
 
-    public User(int id, String username, String password, boolean enabled, String role, String email) {
+    public User(int id, String username, String password, boolean enabled, List<String> role, String email) {
         this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
         this.setEmail(email);
     }
 
-    public User(String username, String password, boolean enabled, String role, String email) {
+    public User(String username, String password, boolean enabled, List<String> role, String email) {
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
         this.setEmail(email);
     }
 
-    public User(String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
+    public User(String username, String password, boolean enabled, List<String> role, String email, String firstname, String lastname) {
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
         this.setEmail(email);
         this.setFirstname(firstname);
         this.setLastname(lastname);
     }
 
-    public User(int id, String username, String password, boolean enabled, String role, String email, String firstname, String lastname) {
+    public User(int id, String username, String password, boolean enabled, List<String> role, String email, String firstname, String lastname) {
         this.id = id;
         this.setUsername(username);
         this.setPassword(password);
         this.setEnabled(enabled);
-        this.setRole(role);
+        this.setRoles(role);
         this.setEmail(email);
         this.setFirstname(firstname);
         this.setLastname(lastname);
@@ -113,14 +123,6 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getEmail() {

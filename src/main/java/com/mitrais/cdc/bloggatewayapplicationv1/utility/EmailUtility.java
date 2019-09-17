@@ -1,7 +1,6 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
-//import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -20,47 +18,19 @@ public class EmailUtility {
 
     private User user;
 
-    public boolean sendEmail (String email, String token, String username, String contents, String subject) {
+    public boolean sendEmail (Map<String, String> data) {
         log.info("Inside sendEmail1");
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("email", email);
-        data.put("token", token);
-        data.put("username", username);
-        data.put("subject", subject);
+
 
         try {
-            if(sendEmail(data, contents)) {
+            if(sendEmail(data, data.get("contents"))) {
                 return true;
             }else {
                 return false;
             }
         } catch (MessagingException | IOException e) {
             log.error(e.getMessage(), e);
-        } /*catch (AddressException e) {
-            e.printStackTrace();
-        }*/
-
-        return false;
-    }
-
-    public boolean sendEmail(User user, String token, String contents) {
-
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("email", user.getEmail());
-        data.put("token", token);
-
-
-        try {
-            if(sendEmail(data, contents)) {
-                return true;
-            }else {
-                return false;
-            }
-        } catch (MessagingException | IOException e) {
-            log.error(e.getMessage(), e);
-        } /*catch (AddressException e) {
-            e.printStackTrace();
-        }*/
+        }
 
         return false;
     }
@@ -90,7 +60,6 @@ public class EmailUtility {
             });
 
             Message message = new MimeMessage(session);
-            /*message.setFrom(new InternetAddress(emailProperties.getEmail(), false));*/
             message.setFrom(new InternetAddress("admin@onestopclick.com", false));
 
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));

@@ -1,5 +1,6 @@
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
+import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResponseWrapper;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,14 +29,9 @@ public class Utility {
 
     public Utility(){}
 
-    public Map<Object, Object> getResponseData(){
-        Map<Object, Object> map = new HashMap<>();
-        map.put("message", this.message);
-        map.put("contents", this.data);
-
-        return map;
+    public ResponseWrapper getResponseData(){
+        return new ResponseWrapper(this.message, this.data);
     }
-
 
 
 }
