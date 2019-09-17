@@ -131,8 +131,8 @@ public class BlogGatewayApplicationV1ApplicationTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['message']", containsString("Check your email to activate your account")))
-                .andExpect(jsonPath("$['contents']['username']", containsString("arkhyterima")))
-                .andExpect(jsonPath("$['contents']['roles'][0]", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['data']['username']", containsString("arkhyterima")))
+                .andExpect(jsonPath("$['data']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
@@ -151,9 +151,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$['contents']['message']", containsString("Update user data has been updated successfully")))
-                .andExpect(jsonPath("$['contents']['data']['username']", containsString("test2")))
-                .andExpect(jsonPath("$['contents']['data']['roles'][0]", containsString("ROLE_USER")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Update user data has been updated successfully")))
+                .andExpect(jsonPath("$['data']['data']['username']", containsString("test2")))
+                .andExpect(jsonPath("$['data']['data']['roles'][0]", containsString("ROLE_USER")));
     }
 
     @Test
@@ -161,8 +161,8 @@ public class BlogGatewayApplicationV1ApplicationTests {
         String username = "arkhyterima";
         mockMvc.perform(delete("/api/delete/user/"+username))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$['contents']['message']", containsString("Delete user data has been executed successfully")))
-                .andExpect(jsonPath("$['contents']['data']", containsString("arkhyterima")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Delete user data has been executed successfully")))
+                .andExpect(jsonPath("$['data']['data']", containsString("arkhyterima")));
 
     }
 
@@ -173,7 +173,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/find/user/"+ID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['data']['username']", containsString(USERNAME_FOR_ID_2)));
+                .andExpect(jsonPath("$['data']['data']['username']", containsString(USERNAME_FOR_ID_2)));
 
     }
 
@@ -183,7 +183,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/find-user-by-username/"+USERNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['data']['roles'][0]", containsString(ROLE_FOR_ID_2)));
+                .andExpect(jsonPath("$['data']['data']['roles'][0]", containsString(ROLE_FOR_ID_2)));
 
     }
 
@@ -193,9 +193,9 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(get("/api/all-users/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$['contents']['message']", containsString("Users data was founds")))
-                .andExpect(jsonPath("$['contents']['data'][0]['username']", containsString("admin")))
-                .andExpect(jsonPath("$['contents']['data'][0]['roles'][0]", containsString("ROLE_ADMIN")));
+                .andExpect(jsonPath("$['data']['message']", containsString("Users data was founds")))
+                .andExpect(jsonPath("$['data']['data'][0]['username']", containsString("admin")))
+                .andExpect(jsonPath("$['data']['data'][0]['roles'][0]", containsString("ROLE_ADMIN")));
     }
 
 }

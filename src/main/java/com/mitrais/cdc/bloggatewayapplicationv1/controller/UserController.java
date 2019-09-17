@@ -4,6 +4,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.NewPasswordPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResetPasswordPayload;
+import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResponseWrapper;
 import com.mitrais.cdc.bloggatewayapplicationv1.services.UserServices;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.Utility;
@@ -29,7 +30,7 @@ public class UserController extends CrossOriginController{
     EmailUtility emailUtility;
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public ResponseEntity userRegister(@RequestBody User user){
+    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody User user){
 
         if(userService.findUserByUsername(user.getUsername()).getMessage().equals("User data was found")){
             return ResponseEntity.ok(new Utility("Your username is not available, please find the new one", user).getResponseData());
@@ -68,27 +69,27 @@ public class UserController extends CrossOriginController{
     }
 
     @RequestMapping(value="/update/user", method = RequestMethod.PATCH)
-    public ResponseEntity updateUserData(@RequestBody User user){
+    public ResponseEntity<ResponseWrapper> updateUserData(@RequestBody User user){
         return ResponseEntity.ok(new Utility("Update User Data", userService.updateUserData(user)).getResponseData());
     }
 
     @RequestMapping(value="/delete/user/{username}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteUserDataByUsername(@PathVariable("username") String username){
+    public ResponseEntity<ResponseWrapper> deleteUserDataByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(new Utility("Delete User Data", userService.deleteUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/find/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity findUserDataById(@PathVariable("id") int id){
+    public ResponseEntity<ResponseWrapper> findUserDataById(@PathVariable("id") int id){
         return ResponseEntity.ok(new Utility("Find User Data", userService.findUserById(id)).getResponseData());
     }
 
     @RequestMapping(value="/find-user-by-username/{username}", method = RequestMethod.GET)
-    public ResponseEntity findUserByUsername(@PathVariable("username") String username){
+    public ResponseEntity<ResponseWrapper> findUserByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(new Utility("Find User Data By Username", userService.findUserByUsername(username)).getResponseData());
     }
 
     @RequestMapping(value="/all-users", method = RequestMethod.GET)
-    public ResponseEntity getAllUsers(){
+    public ResponseEntity<ResponseWrapper> getAllUsers(){
         return ResponseEntity.ok(new Utility("Find User Data", userService.getAllUsers()).getResponseData());
     }
 
@@ -96,16 +97,12 @@ public class UserController extends CrossOriginController{
      * url to handle reset password request, this api will send email that contain link to reset the password
      * */
     @RequestMapping(value="/resetpassword", method = RequestMethod.POST)
-    public ResponseEntity resetPasswordRequest(@RequestBody ResetPasswordPayload request){
+    public ResponseEntity<ResponseWrapper> resetPasswordRequest(@RequestBody ResetPasswordPayload request){
 
         String email = request.getEmail();
         User user = userService.findUserByEmail(email);
         String encodedUsername = new String(Base64.encodeBase64(user.getUsername().getBytes()));
         String contents = "Please klik the following link to reset your password, <br/> <a href = \"http://localhost:3000/resetpassword?id=" +encodedUsername+"\">Reset Password</a>";
-
-        if(user == null){
-            return ResponseEntity.ok(new Utility("User data not found", null).getResponseData());
-        }
 
         try {
             Map<String, String> resetData = new HashMap<String, String>();
@@ -126,7 +123,7 @@ public class UserController extends CrossOriginController{
     }
 
     @RequestMapping(value="/reset", method = RequestMethod.POST)
-    public ResponseEntity resetPassword(@RequestBody NewPasswordPayload password){
+    public ResponseEntity<ResponseWrapper> resetPassword(@RequestBody NewPasswordPayload password){
 
         try{
             return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.resetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
@@ -137,7 +134,7 @@ public class UserController extends CrossOriginController{
     }
 
     @RequestMapping(value="/activate", method = RequestMethod.GET)
-    public ResponseEntity activateUser(@RequestParam("id") String id){
+    public ResponseEntity<ResponseWrapper> activateUser(@RequestParam("id") String id){
 
         byte[] usernameDecoded = Base64.decodeBase64(id.getBytes());
         String username = new String(usernameDecoded);
@@ -152,10 +149,4 @@ public class UserController extends CrossOriginController{
         return ResponseEntity.ok(new Utility("User activated was failed", null).getResponseData());
     }
 
-    @RequestMapping(value="/test", method = RequestMethod.GET)
-    public String Test(){
-        String user = "admin:admin123";
-        String bytesEncoded = new String(Base64.encodeBase64(user.getBytes()));
-        return bytesEncoded;
-    }
 }
