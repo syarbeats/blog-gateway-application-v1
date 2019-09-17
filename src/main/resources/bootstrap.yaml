@@ -5,3 +5,4 @@ zuul:
       url: http://localhost:8081
       stripPrefix: true
       sensitiveHeaders:
+      ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
