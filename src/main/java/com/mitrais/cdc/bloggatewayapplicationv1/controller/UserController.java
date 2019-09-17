@@ -10,6 +10,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -65,7 +66,7 @@ public class UserController extends CrossOriginController{
 
             }
         }
-        return ResponseEntity.ok(new Utility("Sent Email was failed when User Registration", response).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sent Email was failed when User Registration", response).getResponseData());
     }
 
     @RequestMapping(value="/update/user", method = RequestMethod.PATCH)
@@ -118,7 +119,7 @@ public class UserController extends CrossOriginController{
             log.error(e.getMessage(), e);
 
         }
-        return ResponseEntity.ok(new Utility("Sending email to reset password was failed", user).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sending email to reset password was failed", user).getResponseData());
 
     }
 
@@ -130,7 +131,7 @@ public class UserController extends CrossOriginController{
         }catch (Exception e){
 
         }
-        return ResponseEntity.ok(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
     }
 
     @RequestMapping(value="/activate", method = RequestMethod.GET)
@@ -146,7 +147,7 @@ public class UserController extends CrossOriginController{
             return ResponseEntity.ok(new Utility("Your account has been activated", username).getResponseData());
         }
 
-        return ResponseEntity.ok(new Utility("User activated was failed", null).getResponseData());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User activated was failed", null).getResponseData());
     }
 
 }

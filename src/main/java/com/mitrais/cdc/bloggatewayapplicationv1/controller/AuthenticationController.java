@@ -24,11 +24,6 @@ public class AuthenticationController extends CrossOriginController {
     public ResponseEntity<LoginResponse> login(@RequestBody AuthenticationPayload authenticationPayload){
 
         LoginResponse response = authenticationService.login(authenticationPayload);
-
-        if(!response.isSuccess()){
-            return ResponseEntity.ok(response);
-        }
-
         return ResponseEntity.ok(response);
     }
 }

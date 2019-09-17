@@ -3,8 +3,10 @@ package com.mitrais.cdc.bloggatewayapplicationv1.services;
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -112,18 +114,19 @@ public class UserServices {
 
     public User findUserByEmail(String email){
 
+        User userdata = null;
         try{
-            User user = userRepository.findByEmail(email).get();
+            Optional<User> user = userRepository.findByEmail(email);
 
-            if(user != null ){
-                return user;
+            if(user.isPresent() ){
+                userdata = user.get();
             }
 
-        }catch (Exception e){
-            log.info(e.getMessage(), e);
+        }catch (UsernameNotFoundException e){
+            throw new UsernameNotFoundException("Username not found");
         }
 
-        return null ;
+        return userdata;
     }
 
     public APIResponse getAllUsers(){
