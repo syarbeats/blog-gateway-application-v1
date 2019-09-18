@@ -162,7 +162,7 @@ public class BlogGatewayApplicationV1ApplicationTests {
         mockMvc.perform(delete("/api/delete/user/"+username))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['data']['message']", containsString("Delete user data has been executed successfully")))
-                .andExpect(jsonPath("$['data']['data']", containsString("arkhyterima")));
+                .andExpect(jsonPath("$['data']['data']['username']", containsString("arkhyterima")));
 
     }
 
