@@ -24,31 +24,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final JwtTokenProvider tokenProvider;
+    private PasswordEncoder passwordEncoder;
+    private UserDetailsServices userDetailsService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    UserDetailsServices userDetailsService;
-
-    public SecurityConfig(JwtTokenProvider tokenProvider) {
+    public SecurityConfig(JwtTokenProvider tokenProvider, UserDetailsServices userDetailsServices, PasswordEncoder passwordEncoder) {
         this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsServices;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
         log.info("Authentication Provider Process.....");
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
 
         return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        log.info("Encode password....");
-        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -63,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/resetpassword*").permitAll()
                 .antMatchers("/api/reset*").permitAll()
                 .antMatchers("/api/authentication").permitAll()
-                .antMatchers("/api/register","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(securityConfigurerAdapter());
