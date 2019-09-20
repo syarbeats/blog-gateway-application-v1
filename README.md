@@ -1,4 +1,4 @@
-# blog-gateway-application-v1
+# blog-gateway-application-v1 [![Quality Gate Status](http://ec2-13-229-116-70.ap-southeast-1.compute.amazonaws.com:9000/api/project_badges/measure?project=SonarQube-Gateway-Application&metric=alert_status)](http://ec2-13-229-116-70.ap-southeast-1.compute.amazonaws.com:9000/dashboard?id=SonarQube-Gateway-Application)
 This project used zuul proxy as endpoint routing and Swagger-ui to manage API list. 
 Json web token used to handle authentication process in gateway application and will also used in all microservices using 
 secret key sharing between gateway application and its microservices. 
