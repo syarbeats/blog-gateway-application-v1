@@ -5,3 +5,13 @@ zuul:
       url: http://localhost:8081
       stripPrefix: true
       sensitiveHeaders:
+
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: default
+  cloud:
+    config:
+      uri: http://localhost:8888
+
