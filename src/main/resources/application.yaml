@@ -6,11 +6,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: logfile, httptrace, auditevents, loggers, env, mappings, threaddump, metrics
+        include: logfile, httptrace, auditevents, loggers, env, mappings, threaddump, metrics, info
 
 eureka:
   instance:
-    preferIpAddress: true
+    preferIpAddress: false
   client:
     registerWithEureka: true
     fetchRegistry: true
