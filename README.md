@@ -5,7 +5,8 @@ secret key sharing between gateway application and its microservices.
 
 ## Architecture
 
-<img width="446" alt="Architecture" src="https://user-images.githubusercontent.com/18225438/64321242-62e54400-cfea-11e9-9673-e75681ee877a.PNG">
+<img width="516" alt="Microservice Architecture" src="https://user-images.githubusercontent.com/18225438/70013213-8ac45380-15a9-11ea-9786-e42bc4bfacbb.PNG">
+
 
 ## The Stacks:
 1. Springboot 2.1.6
