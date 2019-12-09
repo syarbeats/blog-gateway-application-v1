@@ -7,6 +7,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResetPasswordPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResponseWrapper;
 import com.mitrais.cdc.bloggatewayapplicationv1.services.UserServices;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
+import com.mitrais.cdc.bloggatewayapplicationv1.utility.UserContextHolder;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,9 @@ public class UserController extends CrossOriginController{
 
     @GetMapping("/all-users")
     public ResponseEntity<ResponseWrapper> getAllUsers(){
+
+        log.info("Token in Controller {} ", UserContextHolder.getContext().getAuthToken());
+
         return ResponseEntity.ok(new Utility("Find User Data", userService.getAllUsers()).getResponseData());
     }
 

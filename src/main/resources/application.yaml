@@ -17,7 +17,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
-spring:
+  spring:
   servlet:
     multipart:
       max-file-size: 1000MB
