@@ -1,3 +1,13 @@
+/**
+ * <h1>Utility</h1>
+ * This Class will be used to create helper function for
+ * gateway project.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResponseWrapper;
@@ -20,6 +30,7 @@ public class Utility {
 
     @Autowired
     private UserRepository userRepository;
+
 
     public Utility(String message, Object data){
         this.message = message;
