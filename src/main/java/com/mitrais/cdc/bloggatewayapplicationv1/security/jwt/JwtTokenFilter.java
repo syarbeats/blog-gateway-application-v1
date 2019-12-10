@@ -1,3 +1,14 @@
+/**
+ * <h1>JWTTokenFilter</h1>
+ * Class to set JwtTokenProvider into JWTTokenFilter
+ * and To intercept Request before invoke controller.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
+
 package com.mitrais.cdc.bloggatewayapplicationv1.security.jwt;
 
 import org.slf4j.Logger;
@@ -22,10 +33,26 @@ public class JwtTokenFilter extends GenericFilterBean {
     private Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
 
+    /**
+     * This constructor method will used to setup JwtTokenProvider Object
+     *
+     * @param jwtTokenProvider
+     */
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * This method will be used to intercept request
+     * to take Token in its request header and then
+     * validate it and set Authentication in SecurityContextHolder.
+     *
+     * @param req
+     * @param res
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
         throws IOException, ServletException {
