@@ -1,9 +1,17 @@
+/**
+ * <h1>UserServices</h1>
+ * Class to handle User CRUD.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.services;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -140,6 +148,13 @@ public class UserServices {
         return new APIResponse(false, "Data was not found", null);
     }
 
+    /**
+     * This method will be used to activate
+     * user, change enabled field to true.
+     *
+     * @param username
+     * @return will return activated user data
+     */
     public APIResponse activateUser(String username){
 
         User user = userRepository.findByUsername(username);

@@ -1,46 +1,40 @@
+/**
+ * <h1>UserContext</h1>
+ * Class to save all connection data.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserContext {
-    public static final String CORRELATION_ID = "tmx-correlation-id";
-    public static final String AUTH_TOKEN     = "tmx-auth-token";
-    public static final String USER_ID        = "tmx-user-id";
-    public static final String ORG_ID         = "tmx-org-id";
 
-    private String correlationId= new String();
     private String authToken= new String();
-    private String userId = new String();
-    private String orgId = new String();
 
-    public String getCorrelationId() { return correlationId;}
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-    }
-
+    /**
+     * This method will be used to get token
+     * for internal service invocation purpose.
+     *
+     * @return will return token
+     */
     public String getAuthToken() {
         return authToken;
     }
 
+    /**
+     * This method will be used to save token
+     * in user context holder.
+     *
+     * @param authToken
+     */
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
-    }
 
 }

@@ -1,3 +1,13 @@
+/**
+ * <h1>EmailUtility</h1>
+ * Class to handle sending email that required when user registration
+ * and update password as well.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.utility;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
@@ -18,6 +28,13 @@ public class EmailUtility {
 
     private User user;
 
+    /**
+     * This method will be used as proxy for
+     * sending email.
+     *
+     * @param data
+     * @return will return true if sending email process done successfully
+     */
     public boolean sendEmail (Map<String, String> data) {
         log.info("Inside sendEmail1");
 
@@ -35,6 +52,17 @@ public class EmailUtility {
         return false;
     }
 
+    /**
+     * This method will be used for sending email
+     * that required when user registration and update password as well.
+     *
+     * @param data
+     * @param contents
+     * @return
+     * @throws AddressException
+     * @throws MessagingException
+     * @throws IOException
+     */
     public boolean sendEmail(Map<String, String> data, String contents) throws AddressException, MessagingException, IOException {
 
         log.info("Inside sendEmail2");

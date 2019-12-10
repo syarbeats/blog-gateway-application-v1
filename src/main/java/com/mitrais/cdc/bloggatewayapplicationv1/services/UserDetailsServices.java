@@ -1,3 +1,12 @@
+/**
+ * <h1>UserDetailServices</h1>
+ * Class to get UserDetails data based on the given username.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.services;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
@@ -15,6 +24,14 @@ public class UserDetailsServices implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * This method will be used to get UserDetails data
+     * based on the given username.
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

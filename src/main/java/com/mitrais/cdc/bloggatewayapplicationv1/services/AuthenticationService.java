@@ -1,3 +1,12 @@
+/**
+ * <h1>Authentication Service</h1>
+ * Class to handle Authentication Process .
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.services;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
@@ -7,7 +16,6 @@ import com.mitrais.cdc.bloggatewayapplicationv1.payload.TokenPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.repository.UserRepository;
 import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,12 +36,27 @@ public class AuthenticationService {
     private AuthenticationProvider authenticationProvider;
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * This Constructor method will be used to setup UserRepository,
+     * AuthenticationProvider and JwtTokenProvider as well.
+     *
+     * @param userRepository
+     * @param authenticationProvider
+     * @param jwtTokenProvider
+     */
     public AuthenticationService(UserRepository userRepository, AuthenticationProvider authenticationProvider, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.authenticationProvider = authenticationProvider;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * This method will be used to authenticate
+     * username and password in login process.
+     *
+     * @param user
+     * @return will return username and token
+     */
     public LoginResponse login(@Nonnull AuthenticationPayload user){
 
         @CheckForNull
