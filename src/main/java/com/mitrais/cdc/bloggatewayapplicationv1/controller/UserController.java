@@ -1,3 +1,15 @@
+/**
+ * <h1>User Controller</h1>
+ * Class to create API Controller for User related activities
+ * like UserRegistration, User delete, Update and read user data
+ * as well.
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
+
 package com.mitrais.cdc.bloggatewayapplicationv1.controller;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.entity.User;
@@ -31,6 +43,14 @@ public class UserController extends CrossOriginController{
     @Autowired
     EmailUtility emailUtility;
 
+    /**
+     * This method will be used to Create User,
+     * For successful user creation, the system will send email
+     * that contain link to activate User.
+     *
+     * @param user
+     * @return ResponseEntity that contain text confirmation to check email.
+     */
     @PostMapping("/register")
     public ResponseEntity<ResponseWrapper> userRegister(@RequestBody User user){
 
@@ -70,26 +90,58 @@ public class UserController extends CrossOriginController{
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sent Email was failed when User Registration", response).getResponseData());
     }
 
+    /**
+     * This method will be used to update user data,
+     * and will return the updated user data for successfully update process.
+     *
+     * @param user
+     * @return Updated User Data
+     */
     @PatchMapping("/update/user")
     public ResponseEntity<ResponseWrapper> updateUserData(@RequestBody User user){
         return ResponseEntity.ok(new Utility("Update User Data", userService.updateUserData(user)).getResponseData());
     }
 
+    /**
+     * This method will be used to delete user data,
+     * and will return deleted user data for successfully deletion process.
+     *
+     * @param username
+     * @return Deleted user data
+     */
     @DeleteMapping("/delete/user/{username}")
     public ResponseEntity<ResponseWrapper> deleteUserDataByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(new Utility("Delete User Data", userService.deleteUserByUsername(username)).getResponseData());
     }
 
+    /**
+     * This method will be used to find user data based on the given user id
+     * and will return the user data.
+     *
+     * @param id
+     * @return User data
+     */
     @GetMapping("/find/user/{id}")
     public ResponseEntity<ResponseWrapper> findUserDataById(@PathVariable("id") int id){
         return ResponseEntity.ok(new Utility("Find User Data", userService.findUserById(id)).getResponseData());
     }
 
+    /**
+     * This method will be used to find user data based on the given username
+     *
+     * @param username
+     * @return User data
+     */
     @GetMapping("/find-user-by-username/{username}")
     public ResponseEntity<ResponseWrapper> findUserByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(new Utility("Find User Data By Username", userService.findUserByUsername(username)).getResponseData());
     }
 
+    /**
+     * This method will be used to get All User Data
+     *
+     * @return User Data list
+     */
     @GetMapping("/all-users")
     public ResponseEntity<ResponseWrapper> getAllUsers(){
 
@@ -99,8 +151,10 @@ public class UserController extends CrossOriginController{
     }
 
     /**
-     * url to handle reset password request, this api will send email that contain link to reset the password
-     * */
+     * This method will be used to send email to the user
+     * that contain reset password link
+     *
+     */
     @PostMapping("/resetpassword")
     public ResponseEntity<ResponseWrapper> resetPasswordRequest(@RequestBody ResetPasswordPayload request){
 
@@ -127,6 +181,12 @@ public class UserController extends CrossOriginController{
 
     }
 
+    /**
+     * This method will be used to handle Reset Password
+     *
+     * @param password
+     * @return Edited user data
+     */
     @PostMapping("/reset")
     public ResponseEntity<ResponseWrapper> resetPassword(@RequestBody NewPasswordPayload password){
 
@@ -138,6 +198,13 @@ public class UserController extends CrossOriginController{
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
     }
 
+    /**
+     * This method will be used to activate user based on the given encoded username
+     * and will return the activated user data.
+     *
+     * @param id
+     * @return Activated user data
+     */
     @GetMapping("/activate")
     public ResponseEntity<ResponseWrapper> activateUser(@RequestParam("id") String id){
 

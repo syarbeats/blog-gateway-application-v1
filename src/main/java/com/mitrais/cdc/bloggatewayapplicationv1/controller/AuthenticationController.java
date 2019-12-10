@@ -1,3 +1,12 @@
+/**
+ * <h1>Authentication Controller</h1>
+ * Class to create API Controller for Authentication process
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.controller;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.AuthenticationPayload;
@@ -11,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +28,13 @@ public class AuthenticationController extends CrossOriginController {
     @Autowired
     AuthenticationService authenticationService;
 
+    /**
+     * This method will be used as entry point to the application
+     * Successfully authentication process will return username and token.
+     *
+     * @param authenticationPayload
+     * @return It will return username and token.
+     */
     @PostMapping("/authentication")
     public ResponseEntity<LoginResponse> login(@RequestBody @Nonnull AuthenticationPayload authenticationPayload){
 

@@ -1,3 +1,12 @@
+/**
+ * <h1>Swagger Configuration</h1>
+ * Class to config Swagger ui
+ *
+ * @author Syarif Hidayat
+ * @version 1.0
+ * @since 2019-08-20
+ * */
+
 package com.mitrais.cdc.bloggatewayapplicationv1.config;
 
 import org.springframework.context.annotation.Bean;
@@ -19,12 +28,24 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	
+
+    /**
+     * This method will be used to handle Token input in swagger
+     * authorization process
+     *
+     * @return SecurityConfiguration
+     */
 	@Bean
     public SecurityConfiguration securityInfo() {
         return new SecurityConfiguration(null, null, null, null, "", ApiKeyVehicle.HEADER,"Authorization","");
     }
-	
+
+    /**
+     * This method will be used to set API url and controller package
+     * that will be included in Swagger UI.
+     *
+     * @return Docket object
+     */
     @Bean
     public Docket userApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -35,6 +56,12 @@ public class SwaggerConfig {
                 .securitySchemes(Lists.newArrayList(apiKey()));
     }
 
+    /**
+     * This method will be used to write
+     * all API related information.
+     *
+     * @return
+     */
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
                 "Mitrais - CDC Java Boot Camp",
@@ -46,7 +73,12 @@ public class SwaggerConfig {
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
     }
-    
+
+    /**
+     * This method will be used to set Authorization as api key.
+     *
+     * @return
+     */
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
     } 

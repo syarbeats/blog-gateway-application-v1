@@ -48,3 +48,5 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 60000
+
+corsurl: http://localhost:8081, http://172.19.11.164:3000, http://localhost:3000
