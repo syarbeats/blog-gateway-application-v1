@@ -25,8 +25,16 @@ import javax.annotation.Nonnull;
 @RequestMapping("/api")
 public class AuthenticationController extends CrossOriginController {
 
+    private AuthenticationService authenticationService;
+
+    public AuthenticationService getAuthenticationService() {
+        return authenticationService;
+    }
+
     @Autowired
-    AuthenticationService authenticationService;
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     /**
      * This method will be used as entry point to the application
@@ -38,7 +46,7 @@ public class AuthenticationController extends CrossOriginController {
     @PostMapping("/authentication")
     public ResponseEntity<LoginResponse> login(@RequestBody @Nonnull AuthenticationPayload authenticationPayload){
 
-        LoginResponse response = authenticationService.login(authenticationPayload);
+        LoginResponse response = getAuthenticationService().login(authenticationPayload);
         return ResponseEntity.ok(response);
     }
 }

@@ -17,6 +17,7 @@ import com.mitrais.cdc.bloggatewayapplicationv1.payload.APIResponse;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.NewPasswordPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResetPasswordPayload;
 import com.mitrais.cdc.bloggatewayapplicationv1.payload.ResponseWrapper;
+import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.InvalidJwtAuthenticationException;
 import com.mitrais.cdc.bloggatewayapplicationv1.services.UserServices;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.UserContextHolder;
@@ -84,6 +85,7 @@ public class UserController extends CrossOriginController{
 
             }catch(Exception e) {
                 log.error(e.getMessage(), e);
+                throw new ControllerException(e.getMessage());
 
             }
         }
@@ -171,13 +173,13 @@ public class UserController extends CrossOriginController{
             resetData.put("contents", contents);
             resetData.put("subject", "[Admin] Your password reset request");
             emailUtility.sendEmail(resetData);
-            return ResponseEntity.ok(new Utility("Check your email to reset your password", user).getResponseData());
 
         }catch(Exception e) {
             log.error(e.getMessage(), e);
-
+            throw new ControllerException(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Sending email to reset password was failed", user).getResponseData());
+
+        return ResponseEntity.ok(new Utility("Check your email to reset your password", user).getResponseData());
 
     }
 
@@ -189,13 +191,7 @@ public class UserController extends CrossOriginController{
      */
     @PostMapping("/reset")
     public ResponseEntity<ResponseWrapper> resetPassword(@RequestBody NewPasswordPayload password){
-
-        try{
-            return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.resetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
-        }catch (Exception e){
-
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("Change password process was failed", new String(Base64.decodeBase64(password.getId().getBytes()))).getResponseData());
+        return ResponseEntity.ok(new Utility("Change password process have done successfully", userService.resetPassword(new String(Base64.decodeBase64(password.getId().getBytes())), password.getPassword())).getResponseData());
     }
 
     /**
