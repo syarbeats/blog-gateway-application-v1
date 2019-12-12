@@ -23,8 +23,7 @@ import java.util.Optional;
 @Service
 public class UserServices {
 
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public APIResponse userRegistration(User user){
 
@@ -162,4 +161,14 @@ public class UserServices {
         User userData = userRepository.save(user);
         return new APIResponse(true, "User has been activated", userData);
     }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 }

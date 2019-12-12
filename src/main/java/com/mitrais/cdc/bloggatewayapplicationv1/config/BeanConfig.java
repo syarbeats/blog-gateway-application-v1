@@ -9,6 +9,8 @@
 
 package com.mitrais.cdc.bloggatewayapplicationv1.config;
 
+import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenFilter;
+import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtTokenProvider;
 import com.mitrais.cdc.bloggatewayapplicationv1.utility.EmailUtility;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +38,6 @@ public class BeanConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
 }

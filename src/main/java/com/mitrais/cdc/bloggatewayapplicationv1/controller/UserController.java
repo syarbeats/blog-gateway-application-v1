@@ -38,11 +38,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController extends CrossOriginController{
 
-    @Autowired
-    UserServices userService;
 
-    @Autowired
-    EmailUtility emailUtility;
+    private UserServices userService;
+    private EmailUtility emailUtility;
 
     /**
      * This method will be used to Create User,
@@ -217,4 +215,21 @@ public class UserController extends CrossOriginController{
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Utility("User activated was failed", null).getResponseData());
     }
 
+    public UserServices getUserService() {
+        return userService;
+    }
+
+    @Autowired
+    public void setUserService(UserServices userService) {
+        this.userService = userService;
+    }
+
+    public EmailUtility getEmailUtility() {
+        return emailUtility;
+    }
+
+    @Autowired
+    public void setEmailUtility(EmailUtility emailUtility) {
+        this.emailUtility = emailUtility;
+    }
 }

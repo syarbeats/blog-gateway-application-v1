@@ -46,7 +46,7 @@ public class AuthenticationController extends CrossOriginController {
     @PostMapping("/authentication")
     public ResponseEntity<LoginResponse> login(@RequestBody @Nonnull AuthenticationPayload authenticationPayload){
 
-        LoginResponse response = getAuthenticationService().login(authenticationPayload);
+        LoginResponse response = authenticationService.login(authenticationPayload);
         return ResponseEntity.ok(response);
     }
 }

@@ -11,6 +11,7 @@ package com.mitrais.cdc.bloggatewayapplicationv1.config;
 
 import com.mitrais.cdc.bloggatewayapplicationv1.security.jwt.JwtConfigurer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -35,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider tokenProvider;
     private PasswordEncoder passwordEncoder;
     private UserDetailsServices userDetailsService;
+
+    private JwtConfigurer jwtConfigurer;
 
     /**
      * Constructor to set JwtTokenProvider, UserDetailServices and PasswordEncoder
@@ -61,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("Authentication Provider Process.....");
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
 
         return daoAuthenticationProvider;
     }
@@ -88,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(securityConfigurerAdapter());
+                .apply(jwtConfigurer);
 
 
     }
@@ -98,8 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return JwtConfigurer object
      */
-    private JwtConfigurer securityConfigurerAdapter() {
-        return new JwtConfigurer(tokenProvider);
-    }
+    /*private JwtConfigurer securityConfigurerAdapter() {
+        return new JwtConfigurer();
+    }*/
 
+    @Autowired
+    public void setJwtConfigurer(JwtConfigurer jwtConfigurer) {
+        this.jwtConfigurer = jwtConfigurer;
+    }
 }

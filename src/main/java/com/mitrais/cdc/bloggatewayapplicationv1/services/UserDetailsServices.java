@@ -21,8 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsServices implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     /**
      * This method will be used to get UserDetails data
@@ -39,4 +38,14 @@ public class UserDetailsServices implements UserDetailsService {
 
         return new UserDetails(user);
     }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 }
